@@ -1,5 +1,7 @@
 package io.cucumber.core.gherkin.messages;
 
+import io.cucumber.messages.types.TableRow;
+import io.cucumber.messages.types.Tag;
 import io.cucumber.plugin.event.Location;
 import io.cucumber.plugin.event.Node;
 
@@ -9,7 +11,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-final class GherkinMessagesExamples implements Node.Examples {
+final public class GherkinMessagesExamples implements Node.Examples {
 
     private final io.cucumber.messages.types.Examples examples;
     private final List<Example> children;
@@ -52,4 +54,19 @@ final class GherkinMessagesExamples implements Node.Examples {
         return Optional.of(parent);
     }
 
+    public io.cucumber.messages.types.Examples getExamples() {
+        return examples;
+    }
+
+    public Optional<TableRow> getExamplesHeaders() {
+        return examples.getTableHeader();
+    }
+
+    public List<TableRow> getExamplesRows() {
+        return examples.getTableBody();
+    }
+
+    public List<Tag> getExamplesTags() {
+        return examples.getTags();
+    }
 }

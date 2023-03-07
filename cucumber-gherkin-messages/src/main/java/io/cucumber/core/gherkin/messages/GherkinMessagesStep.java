@@ -9,7 +9,7 @@ import io.cucumber.messages.types.PickleStep;
 import io.cucumber.messages.types.PickleTable;
 import io.cucumber.plugin.event.Location;
 
-final class GherkinMessagesStep implements Step {
+final public class GherkinMessagesStep implements Step {
 
     private final PickleStep pickleStep;
     private final Argument argument;

@@ -79,7 +79,7 @@ class CommandlineOptionsParserTest {
     @Test
     void has_version_from_properties_file() {
         parser.parse("--version");
-        assertThat(output(), matchesPattern("\\d+\\.\\d+\\.\\d+(-RC\\d+)?(-SNAPSHOT)?\r?\n"));
+        assertThat(output(), matchesPattern("\\d+\\.\\d+\\.\\d+(-RC\\d+)?(-NINJA)?(-SNAPSHOT)?\r?\n"));
         assertThat(parser.exitStatus(), is(Optional.of((byte) 0x0)));
     }
 

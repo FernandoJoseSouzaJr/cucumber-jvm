@@ -5,7 +5,7 @@ import io.cucumber.plugin.event.Node;
 
 import java.util.Optional;
 
-final class GherkinMessagesScenario implements Node.Scenario {
+final public class GherkinMessagesScenario implements Node.Scenario {
 
     private final Node parent;
     private final io.cucumber.messages.types.Scenario scenario;

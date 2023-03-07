@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
-final class GherkinMessagesFeature implements Feature {
+final public class GherkinMessagesFeature implements Feature {
 
     private final io.cucumber.messages.types.Feature feature;
     private final URI uri;

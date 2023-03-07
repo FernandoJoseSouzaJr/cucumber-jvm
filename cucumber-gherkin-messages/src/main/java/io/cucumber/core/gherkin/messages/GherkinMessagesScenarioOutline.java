@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-final class GherkinMessagesScenarioOutline implements Node.ScenarioOutline {
+final public class GherkinMessagesScenarioOutline implements Node.ScenarioOutline {
 
     private final io.cucumber.messages.types.Scenario scenario;
     private final List<Examples> children;
@@ -50,4 +50,7 @@ final class GherkinMessagesScenarioOutline implements Node.ScenarioOutline {
         return name.isEmpty() ? Optional.empty() : Optional.of(name);
     }
 
+    public List<Examples> getChildren() {
+        return children;
+    }
 }

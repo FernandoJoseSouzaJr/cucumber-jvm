@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * Wraps {@link Pickle} to avoid exposing the gherkin library to all of
  * Cucumber.
  */
-final class GherkinMessagesPickle implements Pickle {
+final public class GherkinMessagesPickle implements Pickle {
 
     private final io.cucumber.messages.types.Pickle pickle;
     private final List<Step> steps;
@@ -111,4 +111,7 @@ final class GherkinMessagesPickle implements Pickle {
         return pickle.getId();
     }
 
+    public io.cucumber.messages.types.Pickle getPickle() {
+        return this.pickle;
+    }
 }

@@ -6,7 +6,7 @@ import io.cucumber.messages.types.PickleTable;
 import java.util.AbstractList;
 import java.util.List;
 
-final class GherkinMessagesDataTableArgument implements DataTableArgument {
+final public class GherkinMessagesDataTableArgument implements DataTableArgument {
 
     private final CellView cells;
     private final int line;

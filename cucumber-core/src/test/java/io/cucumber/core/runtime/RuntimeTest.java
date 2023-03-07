@@ -31,7 +31,6 @@ import io.cucumber.plugin.event.TestRunFinished;
 import io.cucumber.plugin.event.TestRunStarted;
 import io.cucumber.plugin.event.TestStepFinished;
 import io.cucumber.plugin.event.TestStepStarted;
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.ArgumentCaptor;
@@ -507,10 +506,10 @@ class RuntimeTest {
                 .run();
 
         Meta meta = messages.get(0).getMeta().get();
-        assertThat(meta.getProtocolVersion(), matchesPattern("\\d+\\.\\d+\\.\\d+(-RC\\d+)?(-SNAPSHOT)?"));
+        assertThat(meta.getProtocolVersion(), matchesPattern("\\d+\\.\\d+\\.\\d+(-RC\\d+)?(-NINJA)?(-SNAPSHOT)?"));
         assertThat(meta.getImplementation().getName(), is("cucumber-jvm"));
         assertThat(meta.getImplementation().getVersion().get(),
-            matchesPattern("\\d+\\.\\d+\\.\\d+(-RC\\d+)?(-SNAPSHOT)?"));
+            matchesPattern("\\d+\\.\\d+\\.\\d+(-RC\\d+)?(-NINJA)?(-SNAPSHOT)?"));
         assertThat(meta.getOs().getName(), matchesPattern(".+"));
         assertThat(meta.getCpu().getName(), matchesPattern(".+"));
     }

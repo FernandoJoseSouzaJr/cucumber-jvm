@@ -8,12 +8,17 @@
         <relativePath/>
     </parent>
     <artifactId>cucumber-jvm</artifactId>
-    <version>7.11.1-SNAPSHOT</version>
+    <version>7.11.2-NINJA-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Cucumber-JVM</name>
     <description>Cucumber for the JVM</description>
     <url>https://cucumber.io/</url>
-
+    <repositories>
+        <repository>
+            <id>atoeflatrepo</id>
+            <url>s3://atoeflatrepo</url>
+        </repository>
+    </repositories>
     <properties>
         <!-- Tool chains, ect -->
         <base.java.version>1.8</base.java.version>
@@ -476,5 +481,12 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <extensions>
+            <extension>
+                <groupId>com.github.seahen</groupId>
+                <artifactId>maven-s3-wagon</artifactId>
+                <version>1.3.3</version>
+            </extension>
+        </extensions>
     </build>
 </project>

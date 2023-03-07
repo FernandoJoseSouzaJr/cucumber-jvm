@@ -6,7 +6,7 @@ import io.cucumber.plugin.event.Node;
 
 import java.util.Optional;
 
-final class GherkinMessagesExample implements Node.Example {
+final public class GherkinMessagesExample implements Node.Example {
 
     private final TableRow tableRow;
     private final int examplesIndex;
