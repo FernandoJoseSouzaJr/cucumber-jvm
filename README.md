@@ -3,7 +3,7 @@
 [![#StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://vshymanskyy.github.io/StandWithUkraine)
 [![OpenCollective](https://opencollective.com/cucumber/backers/badge.svg)](https://opencollective.com/cucumber)
 [![OpenCollective](https://opencollective.com/cucumber/sponsors/badge.svg)](https://opencollective.com/cucumber)
-[![Maven Central](https://img.shields.io/maven-central/v/io.cucumber/cucumber-java.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.cucumber%22%20AND%20a:%22cucumber-java%22)
+[![Maven Central](https://img.shields.io/maven-central/v/io.cucumber/cucumber-java.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.cucumber/cucumber-java)
 [![Build Status](https://github.com/cucumber/cucumber-jvm/workflows/Cucumber%20CI/badge.svg)](https://github.com/cucumber/cucumber-jvm/actions)
 [![Coverage Status](https://codecov.io/gh/cucumber/cucumber-jvm/branch/main/graph/badge.svg)](https://codecov.io/gh/cucumber/cucumber-jvm/branch/main)
 
@@ -22,7 +22,7 @@ Cucumber-JVM also integrates with all the popular
 
 ## Upgrading?
 
-Migration instructions from previous major version and a long form
+Migration instructions from previous major versions and a long form
 explanation of noteworthy changes can be found in the [release-notes archive](release-notes)
 
 The changes for the current major version can be found in the [CHANGELOG.md](CHANGELOG.md).
@@ -32,7 +32,7 @@ The changes for the current major version can be found in the [CHANGELOG.md](CHA
 Please ask on
 
 * [Stack Overflow](https://stackoverflow.com/questions/tagged/cucumber-jvm).
-* [CucumberBDD Slack](https://cucumberbdd-slack-invite.herokuapp.com/) <sup>[direct link](https://cucumberbdd.slack.com/)</sup>
+* [CucumberBDD Slack](https://communityinviter.com/apps/cucumberbdd/docs-page) <sup>[direct link](https://cucumberbdd.slack.com/)</sup>
 
 ## Bugs and Feature requests
 

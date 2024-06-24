@@ -1,7 +1,7 @@
 Cucumber JUnit Platform Engine
 ==============================
 
-Use JUnit Platform to execute Cucumber scenarios.
+Use the JUnit (5) Platform to execute Cucumber scenarios.
 
 Add the `cucumber-junit-platform-engine` dependency to your `pom.xml`:
 
@@ -19,12 +19,14 @@ and execute Cucumber scenarios.
 
 ## Surefire and Gradle workarounds
 
-Maven Surefire and Gradle do not yet support discovery of non-class based tests
+Maven, Surefire and Gradle do not yet support discovery of non-class based tests
 (see: [gradle/#4773](https://github.com/gradle/gradle/issues/4773),
 [SUREFIRE-1724](https://issues.apache.org/jira/browse/SUREFIRE-1724)). As a
-workaround you can either use the
-[JUnit Platform Suite Engine](https://junit.org/junit5/docs/current/user-guide/#junit-platform-suite-engine) 
-or the [JUnit Platform Console Launcher](https://junit.org/junit5/docs/current/user-guide/#running-tests-console-launcher).
+ workaround, you can either use:
+ * the [JUnit Platform Suite Engine](https://junit.org/junit5/docs/current/user-guide/#junit-platform-suite-engine);
+ * the [JUnit Platform Console Launcher](https://junit.org/junit5/docs/current/user-guide/#running-tests-console-launcher) or;
+ * the [Gradle Cucumber-Companion](https://github.com/gradle/cucumber-companion) plugins for Gradle and Maven.
+ * the [Cucable](https://github.com/trivago/cucable-plugin) plugin for Maven.
 
 ### Use the JUnit Platform Suite Engine
 
@@ -32,11 +34,11 @@ The JUnit Platform Suite Engine can be used to run Cucumber. See
 [Suites with different configurations](#suites-with-different-configurations)
 for a brief how to.
 
-Because Surefire and Gradle reports the results in  a `<Class Name> - <Method Name>`
-format only scenario names or example numbers are reported. This
+Because Surefire and Gradle reports provide the results in a `<Class Name> - <Method Name>`
+format, only scenario names or example numbers are reported. This
 can make for hard to read reports. To improve the readability of the reports
 provide the `cucumber.junit-platform.naming-strategy=long` configuration
-parameter. This will include the feature name as part of the tests name. 
+parameter. This will include the feature name as part of the test name. 
 
 #### Maven
 
@@ -44,7 +46,7 @@ parameter. This will include the feature name as part of the tests name.
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-surefire-plugin</artifactId>
-    <version>3.0.0-M5</version>
+    <version>3.2.5</version>
     <configuration>
         <properties>
             <configurationParameters>
@@ -144,6 +146,24 @@ tasks {
 }
 ```
 
+### Running a single scenario or feature from the CLI
+
+To select a single scenario or feature the `cucumber.features` property can be
+used. Because this property will cause Cucumber to ignore any other selectors
+from JUnit, it is prudent to execute only the Cucumber engine.
+
+#### Maven
+
+To select the scenario on line 10 of the `example.feature` file use:
+
+```shell
+mvn test -Dsurefire.includeJUnit5Engines=cucumber -Dcucumber.plugin=pretty -Dcucumber.features=path/to/example.feature:10 
+```
+
+#### Gradle
+
+TODO: (I don't know how. Feel free to send a pull request. ;))
+
 ## Suites with different configurations
 
 The JUnit Platform Suite Engine can be used to run Cucumber multiple times with
@@ -158,21 +178,23 @@ different configurations. Add the `junit-platform-suite` dependency:
 </dependency>
 ```
 
-Then define suites as needed:
+Then define suites as needed using the annotation from the
+[`org.junit.platform.suite.api`](https://junit.org/junit5/docs/current/api/org.junit.platform.suite.api/org/junit/platform/suite/api/package-summary.html)
+package:
 
 ```java
 package com.example;
 
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
-import org.junit.platform.suite.api.SelectClasspathResource;
+import org.junit.platform.suite.api.SelectPackages;
 import org.junit.platform.suite.api.Suite;
 
 import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
 
 @Suite
 @IncludeEngines("cucumber")
-@SelectClasspathResource("com/example")
+@SelectPackages("com.example")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.example")
 public class RunCucumberTest {
 }
@@ -180,10 +202,10 @@ public class RunCucumberTest {
 
 ## Parallel execution ## 
 
-By default, Cucumber runs tests sequentially in a single thread. Running  tests
+By default, Cucumber runs tests sequentially in a single thread. Running tests
 in parallel is available as an opt-in feature. To enable parallel execution, set
 the `cucumber.execution.parallel.enabled` configuration parameter to `true`,
-e.g. in `junit-platform.properties`.
+e.g., in `junit-platform.properties`.
 
 To control properties such as the desired parallelism and maximum parallelism,
 Cucumber supports JUnit 5s `ParallelExecutionConfigurationStrategy`. Cucumber
@@ -195,7 +217,7 @@ strategy.
 `cucumber.execution.parallel.config.dynamic.factor`.
 
 * `fixed`: Set `cucumber.execution.parallel.config.fixed.parallelism` to the
-  desired parallelism and `cucumber.execution.parallel.config.config.fixed.max-pool-size`
+  desired parallelism and `cucumber.execution.parallel.config.fixed.max-pool-size`
   to the maximum pool size of the underlying ForkJoin pool.
 
 * `custom`: Specify a custom `ParallelExecutionConfigurationStrategy`
@@ -206,7 +228,7 @@ factor of `1`.
 
 Note: While `.fixed.max-pool-size` effectively limits the maximum number of
 concurrent threads, Cucumber does not guarantee that the number of concurrently
-executing scenarios will not exceed this. See (junit5/#3108)[https://github.com/junit-team/junit5/issues/3108]
+executing scenarios will not exceed this. See [junit5/#3108](https://github.com/junit-team/junit5/issues/3108)
 for details.
 
 ### Exclusive Resources ###
@@ -291,8 +313,8 @@ cucumber.execution.exclusive-resources.isolated.read-write=org.junit.platform.en
 ```
 ### Executing features in parallel 
 
-By default, when parallel execution in enabled, scenarios and examples are
-executed in parallel. Due to limitations JUnit 4 could only execute features in
+By default, when parallel execution is enabled, scenarios and examples are
+executed in parallel. Due to limitations, JUnit 4 could only execute features in
 parallel. This behaviour can be restored by setting the configuration parameter
 `cucumber.execution.execution-mode.feature` to `same_thread`. 
 
@@ -301,7 +323,7 @@ parallel. This behaviour can be restored by setting the configuration parameter
 Cucumber receives its configuration from the JUnit Platform. To see how these can be supplied; see the JUnit
 documentation
 [4.5. Configuration Parameters](https://junit.org/junit5/docs/current/user-guide/#running-tests-config-params). For 
-documentation on Cucumber properties see [Constants](src/main/java/io/cucumber/junit/platform/engine/Constants.java).
+documentation on Cucumber properties, see [Constants](src/main/java/io/cucumber/junit/platform/engine/Constants.java).
 
 ```
 cucumber.ansi-colors.disabled=                                 # true or false. 
@@ -317,7 +339,13 @@ cucumber.filter.name=                                          # a regular expre
 cucumber.features=                                             # comma separated paths to feature files. 
                                                                # example: path/to/example.feature, path/to/other.feature
                                                                # note: When used any discovery selectors from the JUnit
-                                                               # Platform will be ignored. Use with caution and care.
+                                                               # Platform will be ignored. This may lead to multiple
+                                                               # executions of Cucumber. For example when used in
+                                                               # combination with the JUnit Platform Suite Engine.
+                                                               # When using Cucumber through the JUnit Platform
+                                                               # Launcher API or the JUnit Platform Suite Engine, it is
+                                                               # recommended to use JUnit's DiscoverySelectors or 
+                                                               # Junit Platform Suite annotations.
 
 cucumber.filter.tags=                                          # a cucumber tag expression.
                                                                # only scenarios with matching tags are executed.
@@ -332,6 +360,16 @@ cucumber.glue=                                                 # comma separated
 cucumber.junit-platform.naming-strategy=                       # long or short.
                                                                # default: short
                                                                # include parent descriptor name in test descriptor.
+
+cucumber.junit-platform.naming-strategy.short.example-name=    # number or pickle.
+                                                               # default: number
+                                                               # Use example number or pickle name for examples when
+                                                               # short naming strategy is used
+
+cucumber.junit-platform.naming-strategy.long.example-name=     # number or pickle.
+                                                               # default: number
+                                                               # Use example number or pickle name for examples when
+                                                               # long naming strategy is used
 
 cucumber.plugin=                                               # comma separated plugin strings.
                                                                # example: pretty, json:path/to/report.json
@@ -372,7 +410,7 @@ cucumber.execution.parallel.config.strategy=                   # dynamic, fixed 
 cucumber.execution.parallel.config.fixed.parallelism=          # positive integer.
                                                                # example: 4
 
-cucumber.execution.parallel.config.config.fixed.max-pool-size= # positive integer.
+cucumber.execution.parallel.config.fixed.max-pool-size=        # positive integer.
                                                                # example: 4
 
 cucumber.execution.parallel.config.dynamic.factor=             # positive double.
@@ -469,7 +507,7 @@ for more information.
 ## Aborting Tests
 
 Cucumber supports [OpenTest4Js](https://github.com/ota4j-team/opentest4j)
-`TestAbortedException`. This makes it possible to use JUnit Jupiters
+`TestAbortedException`. This makes it possible to use JUnit Jupiter's
 `Assumptions` to abort rather than fail a scenario.
 
 ```java
@@ -493,7 +531,46 @@ public class RpnCalculatorSteps {
 ## Rerunning Failed Scenarios ##
 
 When using `cucumber-junit-platform-engine` rerun files are not supported.
-However, the JUnit Platform allows you to rerun failed tests through its API.
+Use either Maven, Gradle or the JUnit Platform Launcher API.
+
+### Using Maven
+
+When running Cucumber through the [JUnit Platform Suite Engine](use-the-jUnit-platform-suite-engine)
+use [`rerunFailingTestsCount`](https://maven.apache.org/surefire/maven-surefire-plugin/examples/rerun-failing-tests.html).
+
+Note: any files written by Cucumber will be overwritten during the rerun.
+
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.2.5</version>
+    <configuration>
+        <rerunFailingTestsCount>2</rerunFailingTestsCount>
+        <properties>
+            <!-- Work around. Surefire does not include enough
+                 information to disambiguate between different
+                 examples and scenarios. -->
+            <configurationParameters>
+                cucumber.junit-platform.naming-strategy=long
+            </configurationParameters>
+        </properties>
+    </configuration>
+</plugin>
+```
+
+### Using Gradle.
+
+Gradle support for JUnit 5 is rather limited 
+[gradle#4773](https://github.com/gradle/gradle/issues/4773), 
+[junit5#2849](https://github.com/junit-team/junit5/issues/2849).
+As a workaround you can the [Gradle Cucumber-Companion](https://github.com/gradle/cucumber-companion)
+plugin in combination with [Gradle Test Retry](https://github.com/gradle/test-retry-gradle-plugin)
+plugin.
+
+Note: any files written by Cucumber will be overwritten while retrying.
+
+### Using the JUnit Platform Launcher API
 
 ```java
 package com.example;
@@ -505,6 +582,7 @@ import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
+import org.junit.platform.launcher.listeners.TestExecutionSummary;
 import org.junit.platform.launcher.listeners.TestExecutionSummary.Failure;
 
 import java.util.List;
@@ -546,7 +624,6 @@ public class RunCucumber {
 
       TestExecutionSummary rerunSummary = listener.getSummary();
       // Do something with rerunSummary
-
    }
 
 }
